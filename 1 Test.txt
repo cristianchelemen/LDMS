@@ -1,0 +1,9 @@
+SELECT table_name, status, comments
+  FROM user_tables 
+    NATURAL JOIN user_tab_comments;
+--
+  SELECT t.table_name, t.column_name, t.data_type, t.data_precision, t.data_scale, t.char_length, t.nullable, c.comments
+    FROM user_tab_columns t, user_col_comments c
+   WHERE (t.table_name = c.table_name)
+     AND (t.column_name = c.column_name)
+ORDER BY table_name, column_id;
