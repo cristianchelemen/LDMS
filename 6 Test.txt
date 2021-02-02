@@ -1,0 +1,17 @@
+SET serveroutput ON;
+DECLARE
+  v_emp_id wid_emp.emp_id%TYPE;
+  v_message VARCHAR2 (128);
+BEGIN
+  v_emp_id := 90001;
+  GetSalary (v_emp_id, v_message);
+  dbms_output.Put_Line (v_message);
+  --
+  v_emp_id := 80001;
+  GetSalary (v_emp_id, v_message);
+  dbms_output.Put_Line (v_message);
+END;
+/
+
+--The salary for John Smith (90001) is 0
+--The employee with ID 80001 does not exist!
