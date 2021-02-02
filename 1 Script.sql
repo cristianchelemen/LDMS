@@ -18,7 +18,7 @@ CREATE TABLE wid_emp (emp_id     NUMBER   (10, 0)
                      ,job_title  VARCHAR2 (50)    NOT NULL
                      ,mgr_id     NUMBER   (10, 0)
                      ,date_hired DATE             NOT NULL
-                     ,salary     NUMBER   (10,0)  NOT NULL
+                     ,salary     NUMBER   (10, 0) NOT NULL
                      ,dept_id    NUMBER   (5, 0)  NOT NULL
                      --
                      ,CONSTRAINT emp_pk  PRIMARY KEY (emp_id) 
