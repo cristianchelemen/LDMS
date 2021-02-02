@@ -1,0 +1,33 @@
+--1. Observe employee 90001 department; Transfer him to another department. -- Test passed
+SELECT dept_id from wid_emp WHERE (emp_id = 90001); -- 1
+--
+BEGIN
+  DeptTransfer (90001, 2);
+END;
+/
+SELECT dept_id from wid_emp WHERE (emp_id = 90001); -- 2
+
+--2. Transfer employee 90001 to same department. -- Test passed
+BEGIN
+  DeptTransfer (90001, 2);
+END;
+/
+SELECT dept_id from wid_emp WHERE (emp_id = 90001); -- 2
+
+--3. Transfer employee 90001 to non-existing department. -- Error ORA-20015: Destination department with ID 66 does not exist! -- Test passed
+BEGIN
+  DeptTransfer (90001, 66);
+END;
+/
+
+--4. Transfer non-existing employee 80001 to an existing department. -- Error ORA-20014: Employee with ID 80001 does not exist! -- Test passed
+BEGIN
+  DeptTransfer (80001, 3);
+END;
+/
+
+--5. Transfer employee 90001 to an NULL department. -- Error ORA-20015: Destination department with ID does not exist! -- Test passed
+BEGIN
+  DeptTransfer (90001, NULL);
+END;
+/

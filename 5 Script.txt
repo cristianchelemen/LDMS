@@ -1,0 +1,65 @@
+CREATE OR REPLACE PROCEDURE DeptTransfer (p_emp_id IN wid_emp.emp_id%TYPE, p_dept_id IN wid_emp.dept_id%TYPE) IS
+  -- Note: Do not forget to commit the data!
+  v_current_dept_id wid_emp.dept_id%TYPE;
+  --
+  FUNCTION GetDept (p_emp_id IN wid_emp.emp_id%TYPE) RETURN wid_emp.dept_id%TYPE IS
+    CURSOR c_emp (cp_emp_id IN wid_emp.emp_id%TYPE) IS
+      SELECT dept_id
+        FROM wid_emp
+       WHERE (emp_id = cp_emp_id);
+    --
+    v_return wid_emp.dept_id%TYPE;
+  BEGIN
+    OPEN c_emp (p_emp_id);
+    FETCH c_emp INTO v_return;
+    CLOSE c_emp;
+    --
+    RETURN (v_return);
+  END GetDept;
+  --
+  FUNCTION DepartmentExists (p_dept_id IN wid_dept.dept_id%TYPE) RETURN BOOLEAN IS
+    CURSOR c_dept (cp_dept_id IN wid_dept.dept_id%TYPE) IS
+      SELECT dept_id
+        FROM wid_dept
+       WHERE (dept_id = cp_dept_id);
+    --
+    v_row    c_dept%ROWTYPE;
+    v_return BOOLEAN;
+  BEGIN
+    OPEN c_dept (p_dept_id);
+    FETCH c_dept INTO v_row;
+    v_return := c_dept%Found;
+    CLOSE c_dept;
+    --
+    RETURN (v_return);
+  END DepartmentExists;
+  --
+  PROCEDURE UpdDept (p_emp_id IN wid_emp.emp_id%TYPE, p_dept_id IN wid_emp.dept_id%TYPE) IS
+  BEGIN
+    UPDATE wid_emp
+       SET dept_id = p_dept_id
+     WHERE (emp_id = p_emp_id);
+  END UpdDept;
+BEGIN
+  IF (p_dept_id IS NULL) THEN
+    RAISE_APPLICATION_ERROR (-20017, 'Department ID does not exist!');
+  END IF;
+  --
+  v_current_dept_id := GetDept (p_emp_id);
+  --
+  IF (v_current_dept_id IS NULL) THEN
+    RAISE_APPLICATION_ERROR (-20014, 'Employee with ID ' || TO_CHAR (p_emp_id) || ' does not exist!');
+  END IF;
+  --
+  IF NOT DepartmentExists (p_dept_id) THEN
+    RAISE_APPLICATION_ERROR (-20015, 'Destination department with ID ' || TO_CHAR (p_dept_id) || ' does not exist!');
+  END IF;
+  --
+  IF (v_current_dept_id != p_dept_id) THEN
+    UpdDept (p_emp_id, p_dept_id);
+  END IF;
+EXCEPTION
+  WHEN others THEN
+    RAISE_APPLICATION_ERROR (-20016, 'Record cannot be updated. Error ' || TO_CHAR (SQLCODE) || ' occured for employee with ID ' || TO_CHAR (p_emp_id) || ' - ' || SQLERRM);
+END DeptTransfer;
+/
