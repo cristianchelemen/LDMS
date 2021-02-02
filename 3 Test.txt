@@ -177,6 +177,7 @@ END;
 /
 
 --13. Test record insertion with nested table based insert procedure (similar as above) but with same PK -- Script run successfully; Insertion failed for second record -- Test Passed
+set serveroutput on
 DECLARE
   v_nt create_row.tTabNT := create_row.tTabNT ();
 BEGIN
@@ -226,6 +227,7 @@ END;
 /
 
 --15. Test record insertion with associative array based insert procedure (same as above) but with same PK -- Script run successfully; Insertion failed for second record -- Test Passed
+set serveroutput on
 DECLARE
   v_aa    create_row.tTabAA;
   v_count INTEGER;
