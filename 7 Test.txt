@@ -1,0 +1,2 @@
+SELECT emp_id, emp_name, salary FROM TABLE (emp_pipeline.GetData (2)) ORDER BY emp_name;
+SELECT column_value AS "Result" FROM TABLE (emp_pipeline.GetDataV (2));

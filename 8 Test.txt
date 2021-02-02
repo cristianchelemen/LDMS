@@ -1,0 +1,2 @@
+SELECT SUM (salary) AS total_salary FROM TABLE (emp_pipeline.GetData (2));
+SELECT column_value AS "Result" FROM TABLE (emp_pipeline.GetSalary (2));
