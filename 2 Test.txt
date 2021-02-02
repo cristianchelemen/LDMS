@@ -1,0 +1,2 @@
+SELECT * FROM wid_dept;
+SELECT * FROM wid_emp;
