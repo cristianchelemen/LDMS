@@ -1,0 +1,35 @@
+--1. Observe employee 90001 salary ; Increase his salary by 10%. -- Test passed
+SELECT salary from wid_emp WHERE (emp_id = 90001); -- 100.000
+--
+BEGIN
+  chg_sal_perc (90001, 10);
+END;
+/
+--
+SELECT salary from wid_emp WHERE (emp_id = 90001); -- 110.000
+
+--2. Decrease his salary by 50%. -- Test passed
+--
+BEGIN
+  chg_sal_perc (90001, -50);
+END;
+/
+SELECT salary from wid_emp WHERE (emp_id = 90001); -- 55.000
+
+--3. Decrease his salary by 200%. -- Salary will become zero -- Test passed
+BEGIN
+  chg_sal_perc (90001, -200);
+END;
+/
+--
+SELECT salary from wid_emp WHERE (emp_id = 90001); -- 0
+
+--4. Run procedure with NULL percentage. -- Error ORA-20011: Please define a proper percentage! -- Test passed
+BEGIN
+  chg_sal_perc (90001, NULL);
+END;
+
+--5. Run procedure for non-existent employee. -- Error ORA-20012: Employee with ID 80001 does not exist! -- Test passed
+BEGIN
+  chg_sal_perc (80001, 10);
+END;
